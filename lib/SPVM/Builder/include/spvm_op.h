@@ -241,6 +241,8 @@ struct SPVM_op {
   int8_t no_need_check;
 };
 
+SPVM_OP* SPVM_OP_new_op_clone(SPVM_COMPILER* compiler, SPVM_OP* op);
+
 SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line);
 
 SPVM_OP* SPVM_OP_new_op_type(SPVM_COMPILER* compiler, SPVM_TYPE* type, const char* file, int32_t line);

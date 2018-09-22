@@ -162,6 +162,16 @@ const char* const SPVM_OP_C_ID_NAMES[] = {
   "DOUBLE_REF",
 };
 
+SPVM_OP* SPVM_OP_new_op_clone(SPVM_COMPILER* compiler, SPVM_OP* op) {
+  // Create new op with other op
+  
+  SPVM_OP* new_op = SPVM_OP_new_op(compiler, op->id, op->file, op->line);
+  new_op->uv = op->uv;
+  new_op->flag = op->flag;
+  
+  return new_op;
+}
+
 SPVM_OP* SPVM_OP_new_op_my(SPVM_COMPILER* compiler, SPVM_MY* my, const char* file, int32_t line) {
   SPVM_OP* op_my = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_MY, file, line);
   op_my->uv.my = my;
