@@ -40,7 +40,7 @@
 %type <opval> deref ref
 %type <opval> new array_init isa
 %type <opval> my_var var
-%type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term
+%type <opval> term opt_normal_terms normal_terms normal_term logical_term relative_term mutable_term
 %type <opval> field_name sub_name
 %type <opval> type basic_type array_type array_type_with_length const_array_type ref_type  type_or_void
 
@@ -570,15 +570,12 @@ term
     }
 
 normal_term
-  : var
-  | CONSTANT
+  : CONSTANT
     {
       $$ = SPVM_OP_build_constant(compiler, $1);
     }
   | UNDEF
   | call_sub
-  | field_access
-  | array_access
   | convert_type
   | new
   | array_init
@@ -587,8 +584,14 @@ normal_term
   | binop
   | unop
   | ref
-  | deref
+  | mutable_term
 
+mutable_term
+  : var
+  | field_access
+  | array_access
+  | deref
+  
 normal_terms
   : normal_terms ',' normal_term
     {
@@ -729,7 +732,7 @@ binop
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
-  | var SPECIAL_ASSIGN normal_term
+  | mutable_term SPECIAL_ASSIGN normal_term
     {
       $$ = SPVM_OP_build_assign(compiler, $2, $1, $3);
     }
