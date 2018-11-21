@@ -5,6 +5,7 @@
 
 struct SPVM_portable {
   char* memory_pool;
+  int32_t memory_pool_length;
   
   SPVM_OPCODE* opcodes;
   int32_t opcodes_length;

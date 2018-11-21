@@ -45,70 +45,6 @@ SPVM_PORTABLE* SPVM_PORTABLE_new() {
   return portable;
 }
 
-int32_t SPVM_PORTABLE_get_portable_memory_byte_size(SPVM_COMPILER* compiler) {
-  SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
-
-  // Opcode Length
-  int32_t portable_opcode_length = compiler->opcode_array->length;
-  portable->opcodes_length = portable_opcode_length;
-  
-  // Constant pool length
-  int32_t portable_constant_pool_length = 0;
-  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
-    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
-    portable_constant_pool_length += package->constant_pool->length;
-  }
-  portable->constant_pool_length = portable_constant_pool_length;
-  
-  // Basic type length
-  int32_t portable_basic_types_length = compiler->basic_types->length;
-  portable->basic_types_length = portable_basic_types_length;
-  
-  // Package vars length(0 is index for not existance)
-  int32_t portable_package_vars_length = compiler->package_vars->length + 1;
-  portable->package_vars_length = portable_package_vars_length;
-  
-  // Fields length(0 is index for not existance)
-  int32_t portable_fields_length = compiler->fields->length + 1;
-  portable->fields_length = portable_fields_length;
-
-  // Arg total length
-  int32_t portable_args_length = 0;
-  for (int32_t sub_index = 0; sub_index < compiler->subs->length; sub_index++) {
-    SPVM_SUB* sub = SPVM_LIST_fetch(compiler->subs, sub_index);
-    portable_args_length += sub->args->length;
-  }
-  portable->args_length = portable_args_length;
-  
-  // Subs length(0 is index for not existance)
-  int32_t portable_subs_length = compiler->subs->length + 1;
-  portable->subs_length = portable_subs_length;
-  
-  // Packages length(0 is index for not existance)
-  int32_t portable_packages_length = compiler->packages->length + 1;
-  portable->packages_length = portable_packages_length;
-  
-  // String pool length
-  int32_t portable_string_pool_length = compiler->string_pool->length;
-  portable->string_pool_length = portable_string_pool_length;
-  
-  // Total byte size(at least 1 byte)
-  int32_t total_byte_size =
-    sizeof(SPVM_OPCODE) * portable_opcode_length +
-    sizeof(int32_t) * portable_constant_pool_length +
-    sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length +
-    sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length +
-    sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length +
-    sizeof(SPVM_RUNTIME_ARG) * portable_args_length +
-    sizeof(SPVM_RUNTIME_SUB) * portable_subs_length +
-    sizeof(SPVM_RUNTIME_PACKAGE) * portable_packages_length +
-    portable_string_pool_length
-    + 1
-  ;
-  
-  return total_byte_size;
-}
-
 SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   SPVM_PORTABLE* portable = SPVM_PORTABLE_new();
 
@@ -155,12 +91,24 @@ SPVM_PORTABLE* SPVM_PORTABLE_build_portable(SPVM_COMPILER* compiler) {
   // String pool length
   int32_t portable_string_pool_length = compiler->string_pool->length;
   portable->string_pool_length = portable_string_pool_length;
-
-  // Total byte size(at least 1 byte)
-  int32_t total_byte_size = SPVM_PORTABLE_get_portable_memory_byte_size(compiler);
   
-  char* memory_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(total_byte_size);
+  // Total byte size(at least 1 byte)
+  int32_t memory_pool_length =
+    sizeof(SPVM_OPCODE) * portable_opcode_length +
+    sizeof(int32_t) * portable_constant_pool_length +
+    sizeof(SPVM_RUNTIME_BASIC_TYPE) * portable_basic_types_length +
+    sizeof(SPVM_RUNTIME_PACKAGE) * portable_package_vars_length +
+    sizeof(SPVM_RUNTIME_FIELD) * portable_fields_length +
+    sizeof(SPVM_RUNTIME_ARG) * portable_args_length +
+    sizeof(SPVM_RUNTIME_SUB) * portable_subs_length +
+    sizeof(SPVM_RUNTIME_PACKAGE) * portable_packages_length +
+    portable_string_pool_length
+    + 1
+  ;
+  
+  char* memory_pool = SPVM_UTIL_ALLOCATOR_safe_malloc_zero(memory_pool_length);
   portable->memory_pool = memory_pool;
+  portable->memory_pool_length = memory_pool_length;
   
   int32_t memory_pool_base = 0;
   
