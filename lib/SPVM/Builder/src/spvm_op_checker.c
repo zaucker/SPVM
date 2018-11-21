@@ -3217,23 +3217,18 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
             check_ast_info->loop_block_stack_length = 0;
             
             // My stack
-            check_ast_info->my_stack = SPVM_LIST_new(0);
+            check_ast_info->my_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
             
             // Block my base stack
-            check_ast_info->block_my_base_stack = SPVM_LIST_new(0);
+            check_ast_info->block_my_base_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
             
             // Switch stack
-            check_ast_info->op_switch_stack = SPVM_LIST_new(0);
+            check_ast_info->op_switch_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
             
             SPVM_OP_CHECKER_check_tree(compiler, sub->op_block, check_ast_info);
             if (compiler->error_count > 0) {
               return;
             }
-            
-            // Free list
-            SPVM_LIST_free(check_ast_info->my_stack);
-            SPVM_LIST_free(check_ast_info->block_my_base_stack);
-            SPVM_LIST_free(check_ast_info->op_switch_stack);
           }
 
           // set assign_to_var flag - Second tree traversal
@@ -3707,7 +3702,7 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
           // Add more information for opcode building - Fourth tree traversal
           if (!(sub->flag & SPVM_SUB_C_FLAG_HAVE_NATIVE_DESC)) {
             // Block stack
-            SPVM_LIST* op_block_stack = SPVM_LIST_new(0);
+            SPVM_LIST* op_block_stack = SPVM_COMPILER_ALLOCATOR_alloc_list(compiler, 0);
             
             // Run OPs
             SPVM_OP* op_root = sub->op_block;
@@ -3789,7 +3784,6 @@ void SPVM_OP_CHECKER_check(SPVM_COMPILER* compiler) {
                 }
               }
             }
-            SPVM_LIST_free(op_block_stack);
           }
         }
       }

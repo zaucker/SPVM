@@ -280,7 +280,7 @@ compile_spvm(...)
     SV* sv_env = sv_2mortal(newRV_inc(sviv_env));
     (void)hv_store(hv_self, "env", strlen("env"), SvREFCNT_inc(sv_env), 0);
   }
-
+  
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
