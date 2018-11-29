@@ -4446,7 +4446,7 @@ void SPVM_OP_CHECKER_resolve_call_sub(SPVM_COMPILER* compiler, SPVM_OP* op_call_
     }
     // Subroutine call
     else {
-      // Search current pacakge
+      // Search current package
       SPVM_PACKAGE* package = op_package_current->uv.package;
       found_sub = SPVM_HASH_fetch(
         package->sub_symtable,
@@ -4968,6 +4968,40 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
       if (found_sub_file_base_string_pool_id == 0) {
         int32_t string_pool_id = SPVM_STRING_BUFFER_add_len(compiler->string_pool, (char*)sub_file_base, strlen(sub_file_base) + 1);
         SPVM_HASH_insert(compiler->string_symtable, sub_file_base, strlen(sub_file_base) + 1, (void*)(intptr_t)string_pool_id);
+      }
+    }
+  }
+  
+  // Resolve interface
+  for (int32_t package_index = 0; package_index < compiler->packages->length; package_index++) {
+    SPVM_PACKAGE* package = SPVM_LIST_fetch(compiler->packages, package_index);
+    
+    for (int32_t interface_package_index = 0; interface_package_index < compiler->packages->length; interface_package_index++) {
+      SPVM_PACKAGE* interface_package = SPVM_LIST_fetch(compiler->packages, interface_package_index);
+      if (interface_package->category == SPVM_PACKAGE_C_CATEGORY_INTERFACE) {
+        SPVM_SUB* interface_sub = SPVM_LIST_fetch(interface_package->subs, 0);
+        const char* sub_interface_signature = interface_sub->signature;
+        if (package->flag & SPVM_PACKAGE_C_FLAG_IS_HAS_ONLY_ANON_SUB) {
+          SPVM_SUB* sub =SPVM_LIST_fetch(package->subs, 0);
+          if (strcmp(sub_interface_signature, sub->signature) == 0) {
+            SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, interface_package->name, strlen(interface_package->name));
+            SPVM_LIST_push(package->interface_basic_types, interface_basic_type);
+          }
+        }
+        else {
+          const char* package_name = package->name;
+          const char* sub_interface_name = interface_sub->name;
+          const char* sub_interface_signature = interface_sub->signature;
+          
+          for (int32_t sub_id = 0; sub_id < package->subs->length; sub_id++) {
+            SPVM_SUB* sub = SPVM_LIST_fetch(package->subs, sub_id);
+            if (strcmp(sub->signature, interface_sub->signature) == 0) {
+              SPVM_BASIC_TYPE* interface_basic_type = SPVM_HASH_fetch(compiler->basic_type_symtable, interface_package->name, strlen(interface_package->name));
+              SPVM_LIST_push(package->interface_basic_types, interface_basic_type);
+              break;
+            }
+          }
+        }
       }
     }
   }

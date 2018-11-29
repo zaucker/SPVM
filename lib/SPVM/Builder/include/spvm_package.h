@@ -61,6 +61,7 @@ struct SPVM_package {
   int32_t category;
   const char* name;
   SPVM_OP* op_begin_sub;
+  SPVM_LIST* interface_basic_types;
 };
 
 SPVM_PACKAGE* SPVM_PACKAGE_new(SPVM_COMPILER* compiler);
