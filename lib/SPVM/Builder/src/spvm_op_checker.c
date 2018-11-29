@@ -5004,5 +5004,21 @@ void SPVM_OP_CHECKER_resolve_packages(SPVM_COMPILER* compiler) {
         }
       }
     }
+
+    // Sort interface basic type by id
+    for (int32_t i = 0; i < (package->interface_basic_types->length - 1); i++) {
+      for (int32_t j = (package->interface_basic_types->length - 1); j > i; j--) {
+        SPVM_BASIC_TYPE* basic_type1 = SPVM_LIST_fetch(package->interface_basic_types, j-1);
+        SPVM_BASIC_TYPE* basic_type2 = SPVM_LIST_fetch(package->interface_basic_types, j);
+        
+        void** values = package->interface_basic_types->values;
+        
+        if (basic_type1->id > basic_type2->id) {
+          SPVM_BASIC_TYPE* temp = values[j-1];
+          values[j-1] = values[j];
+          values[j] = temp;
+        }
+      }
+    }
   }
 }

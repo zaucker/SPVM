@@ -55,6 +55,9 @@ struct SPVM_runtime {
   SPVM_RUNTIME_BASIC_TYPE* sorted_basic_types;
   int32_t basic_types_length;
 
+  SPVM_RUNTIME_BASIC_TYPE* interface_basic_types;
+  int32_t interface_basic_types_length;
+
   SPVM_RUNTIME_FIELD* fields;
   int32_t fields_length;
 
