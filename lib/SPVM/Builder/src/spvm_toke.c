@@ -257,6 +257,10 @@ int SPVM_yylex(SPVM_YYSTYPE* yylvalp, SPVM_COMPILER* compiler) {
                   nl_merge_count++;
                   cur_src_pos += 2;
                 }
+                else if (ch == '\r') {
+                  cur_src_nl[cur_src_pos - nl_merge_count] = '\n';
+                  cur_src_pos++;
+                }
                 else {
                   cur_src_nl[cur_src_pos - nl_merge_count] = ch;
                   cur_src_pos++;
