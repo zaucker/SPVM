@@ -7,18 +7,14 @@
 #include "spvm_native.h"
 
 #include "spvm_op.h"
-#include "spvm_compiler.h"
-#include "spvm_hash.h"
 #include "spvm_list.h"
-#include "spvm_runtime.h"
+#include "spvm_compiler.h"
 #include "spvm_runtime_api.h"
 #include "spvm_runtime_info.h"
 
 #include <spvm_native.h>
 
 static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
-  
-  SPVM_RUNTIME* runtime = env->runtime;
   
   // Package
   int32_t sub_id = env->get_sub_id(env, package_name, "main", "int(string[])");
@@ -121,7 +117,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
   
   // Build runtime
-  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
+  void* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
   // Create env
   SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
