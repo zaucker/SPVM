@@ -278,6 +278,11 @@ void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
   // Free exception
   SPVM_RUNTIME_API_set_exception(env, NULL);
   
+  // Free runtime
+  if (env->runtime != NULL) {
+    SPVM_RUNTIME_API_free_runtime(env->runtime);
+  }
+  
   free(env);
 }
 
