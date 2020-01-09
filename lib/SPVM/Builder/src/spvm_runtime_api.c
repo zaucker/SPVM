@@ -249,7 +249,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 
 void SPVM_RUNTIME_API_push_compiler_module_paths(SPVM_ENV* env, const char* module_path) {
   SPVM_LIST* module_paths = (SPVM_LIST*)env->compiler_module_paths;
-  SPVM_LIST_push(module_paths, module_path);
+  SPVM_LIST_push(module_paths, (char*)module_path);
 }
 
 void SPVM_RUNTIME_API_set_compiler_debug(SPVM_ENV* env, int32_t debug) {
@@ -288,8 +288,13 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
 }
 
-SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler, const char* package_name, SPVM_ENV* env_empty) {
+SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler_tmp, const char* package_name, SPVM_ENV* env_empty) {
 
+  SPVM_COMPILER* compiler = env_empty->compiler;
+
+  // Add include path
+  compiler->module_paths = env_empty->compiler_module_paths;
+  
   // Create use op for entry point package
   SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
   SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);

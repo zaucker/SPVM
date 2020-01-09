@@ -421,5 +421,6 @@ struct SPVM_env {
   void* (*push_compiler_module_paths)(SPVM_ENV* env, const char* module_path);
   void* compiler_debug;
   void* (*set_compiler_debug)(SPVM_ENV* env, const char* module_path);
+  void* compiler;
 };
 #endif

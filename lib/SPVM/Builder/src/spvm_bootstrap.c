@@ -39,6 +39,9 @@
 
 SPVM_ENV* SPVM_BOOTSTRAP_create_env() {
 
+  // Create compiler
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
+
   void* env_init[]  = {
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_offset
     (void*)(intptr_t)sizeof(SPVM_OBJECT), // object_header_byte_size
@@ -164,6 +167,7 @@ SPVM_ENV* SPVM_BOOTSTRAP_create_env() {
     SPVM_RUNTIME_API_push_compiler_module_paths,
     NULL, // compiler_debug
     SPVM_RUNTIME_API_set_compiler_debug,
+    compiler,
   };
   
   int32_t env_length = 255;

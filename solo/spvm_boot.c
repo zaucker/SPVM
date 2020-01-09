@@ -74,9 +74,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Package name
   const char* package_name = "Main";
   
-  // Create compiler
-  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
-  
   // env_empty->set_compiler_debug(env_empty, 1);
   
   // Get script directory
@@ -98,13 +95,11 @@ int32_t main(int32_t argc, const char *argv[]) {
     cur_script_dir[1] = '\0';
   }
   
+  // Add module path
   env_empty->push_compiler_module_paths(env_empty, cur_script_dir);
   
-  // Add include path
-  compiler->module_paths = env_empty->compiler_module_paths;
-
   // Create env
-  SPVM_ENV* env = SPVM_RUNTIME_API_compile(compiler, package_name, env_empty);
+  SPVM_ENV* env = SPVM_RUNTIME_API_compile(NULL, package_name, env_empty);
 
   if (env == NULL) {
     exit(1);
