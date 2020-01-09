@@ -107,14 +107,12 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Add include path
   SPVM_LIST_push(compiler->module_include_pathes, cur_script_dir);
   
-  SPVM_COMPILER_compile(compiler);
-  
-  if (compiler->error_count > 0) {
-    exit(1);
-  }
-  
   // Create env
   SPVM_ENV* env = SPVM_RUNTIME_API_compile(compiler);
+
+  if (env == NULL) {
+    exit(1);
+  }
   
   // Free compiler
   SPVM_COMPILER_free(compiler);

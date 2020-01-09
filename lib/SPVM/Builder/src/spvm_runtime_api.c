@@ -276,6 +276,12 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
 
 SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler) {
 
+  SPVM_COMPILER_compile(compiler);
+
+  if (compiler->error_count > 0) {
+    return NULL;
+  }
+
   // Build runtime_info info
   SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
   
