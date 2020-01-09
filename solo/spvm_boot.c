@@ -5,13 +5,9 @@
 #include <assert.h>
 
 #include "spvm_native.h"
-
-#include "spvm_list.h"
-#include "spvm_compiler.h"
-#include "spvm_runtime_api.h"
 #include "spvm_bootstrap.h"
 
-#include <spvm_native.h>
+#include "spvm_runtime_api.h"
 
 static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
   
@@ -69,12 +65,12 @@ static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package
 
 int32_t main(int32_t argc, const char *argv[]) {
   
-  SPVM_ENV* env_empty = SPVM_BOOTSTRAP_create_env();
+  SPVM_ENV* env = SPVM_BOOTSTRAP_create_env();
   
   // Package name
   const char* package_name = "Main";
   
-  // env_empty->set_compiler_debug(env_empty, 1);
+  // env->set_compiler_debug(env, 1);
   
   // Get script directory
   const char* cur_script_name = argv[0];
@@ -96,10 +92,10 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
   
   // Add module path
-  env_empty->push_compiler_module_paths(env_empty, cur_script_dir);
+  env->push_compiler_module_paths(env, cur_script_dir);
   
   // Create env
-  SPVM_ENV* env = SPVM_RUNTIME_API_compile(NULL, package_name, env_empty);
+  SPVM_RUNTIME_API_compile(NULL, package_name, env);
 
   if (env == NULL) {
     exit(1);
