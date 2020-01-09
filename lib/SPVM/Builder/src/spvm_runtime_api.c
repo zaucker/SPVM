@@ -288,12 +288,13 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
 }
 
-SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler_tmp, const char* package_name, SPVM_ENV* env_empty) {
+void SPVM_RUNTIME_API_compile(SPVM_ENV* env, const char* package_name) {
 
-  SPVM_COMPILER* compiler = env_empty->compiler;
+  // Create compiler
+  SPVM_COMPILER* compiler = SPVM_COMPILER_new();
 
   // Add include path
-  compiler->module_paths = env_empty->compiler_module_paths;
+  compiler->module_paths = env->compiler_module_paths;
   
   // Create use op for entry point package
   SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
@@ -314,14 +315,12 @@ SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler_tmp, const char* pack
   // Build runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
-  env_empty->runtime = runtime;
-  env_empty->native_mortal_stack_capacity = (void*)(intptr_t)1;
-  env_empty->native_mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env_empty, sizeof(SPVM_OBJECT*) * (intptr_t)env_empty->native_mortal_stack_capacity);
+  env->runtime = runtime;
+  env->native_mortal_stack_capacity = (void*)(intptr_t)1;
+  env->native_mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->native_mortal_stack_capacity);
 
   // Free compiler
   SPVM_COMPILER_free(compiler);
-  
-  return env_empty;
 }
 
 void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {

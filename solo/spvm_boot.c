@@ -95,7 +95,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   env->push_compiler_module_paths(env, cur_script_dir);
   
   // Create env
-  SPVM_RUNTIME_API_compile(NULL, package_name, env);
+  SPVM_RUNTIME_API_compile(env, package_name);
 
   if (env == NULL) {
     exit(1);
@@ -111,4 +111,3 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   return status_code;
 }
-
