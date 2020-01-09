@@ -248,7 +248,8 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
 }
 
 void SPVM_RUNTIME_API_push_compiler_module_paths(SPVM_ENV* env, const char* module_path) {
-  
+  SPVM_LIST* module_paths = (SPVM_LIST*)env->compiler_module_paths;
+  SPVM_LIST_push(module_paths, module_path);
 }
 
 void SPVM_RUNTIME_API_set_compiler_debug(SPVM_ENV* env, int32_t debug) {

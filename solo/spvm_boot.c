@@ -97,7 +97,9 @@ int32_t main(int32_t argc, const char *argv[]) {
     cur_script_dir[0] = '.';
     cur_script_dir[1] = '\0';
   }
-
+  
+  env_empty->push_compiler_module_paths(env_empty, cur_script_dir);
+  
   // Add include path
   SPVM_LIST_push(compiler->module_paths, cur_script_dir);
 
