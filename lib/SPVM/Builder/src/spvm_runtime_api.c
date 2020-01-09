@@ -314,12 +314,14 @@ SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler_tmp, const char* pack
   // Build runtime
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
-  SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
+  env_empty->runtime = runtime;
+  env_empty->native_mortal_stack_capacity = (void*)(intptr_t)1;
+  env_empty->native_mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env_empty, sizeof(SPVM_OBJECT*) * (intptr_t)env_empty->native_mortal_stack_capacity);
 
   // Free compiler
   SPVM_COMPILER_free(compiler);
   
-  return env;
+  return env_empty;
 }
 
 void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {
