@@ -77,7 +77,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   // Create compiler
   SPVM_COMPILER* compiler = SPVM_COMPILER_new();
   
-  // compiler->debug = 1;
+  // env_empty->set_compiler_debug(env_empty, 1);
   
   // Get script directory
   const char* cur_script_name = argv[0];
