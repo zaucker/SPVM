@@ -7,6 +7,8 @@
 #include <inttypes.h>
 #include <complex.h>
 
+#include "spvm_compiler.h"
+
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
 #include "spvm_object.h"
@@ -270,6 +272,19 @@ int32_t SPVM_RUNTIME_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_st
 
 SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
+}
+
+SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler) {
+
+  // Build runtime_info info
+  SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
+  
+  // Build runtime
+  SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
+  
+  SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
+  
+  return env;
 }
 
 void SPVM_RUNTIME_API_free_env(SPVM_ENV* env) {

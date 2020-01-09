@@ -112,15 +112,9 @@ int32_t main(int32_t argc, const char *argv[]) {
   if (compiler->error_count > 0) {
     exit(1);
   }
-
-  // Build runtime_info info
-  SPVM_RUNTIME_INFO* runtime_info = SPVM_RUNTIME_INFO_build_runtime_info(compiler);
-  
-  // Build runtime
-  void* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
   // Create env
-  SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
+  SPVM_ENV* env = SPVM_RUNTIME_API_compile(compiler);
   
   // Free compiler
   SPVM_COMPILER_free(compiler);
