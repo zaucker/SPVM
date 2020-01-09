@@ -9,6 +9,7 @@
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_runtime_api.h"
+#include "spvm_bootstrap.h"
 
 #include <spvm_native.h>
 
@@ -67,6 +68,8 @@ static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package
 }
 
 int32_t main(int32_t argc, const char *argv[]) {
+  
+  SPVM_ENV* env_empty = SPVM_BOOTSTRAP_create_env();
   
   // Package name
   const char* package_name = "Main";
