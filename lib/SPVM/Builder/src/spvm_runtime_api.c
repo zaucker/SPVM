@@ -220,8 +220,10 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
     SPVM_RUNTIME_API_call_begin_blocks,
-    NULL, // compiler_module_paths
+    SPVM_LIST_new(0), // compiler_module_paths
+    SPVM_RUNTIME_API_push_compiler_module_paths,
     NULL, // compiler_debug
+    SPVM_RUNTIME_API_set_compiler_debug,
   };
   
   int32_t env_length = 255;
@@ -243,6 +245,14 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
   
   return env;
+}
+
+void SPVM_RUNTIME_API_push_compiler_module_paths(SPVM_ENV* env, const char* module_path) {
+  
+}
+
+void SPVM_RUNTIME_API_set_compiler_debug(SPVM_ENV* env, int32_t debug) {
+  env->compiler_debug = (void*)(intptr_t)debug;
 }
 
 int32_t SPVM_RUNTIME_API_remove_mortal(SPVM_ENV* env, int32_t original_mortal_stack_top, SPVM_OBJECT* remove_object) {

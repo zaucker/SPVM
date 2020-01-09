@@ -213,4 +213,7 @@ SPVM_OBJECT* SPVM_RUNTIME_API_type_name(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_object_type_dimension(SPVM_ENV* env, SPVM_OBJECT* object);
 int32_t SPVM_RUNTIME_API_object_basic_type_id(SPVM_ENV* env, SPVM_OBJECT* object);
 
+void SPVM_RUNTIME_API_push_compiler_module_paths(SPVM_ENV* env, const char* module_path);
+void SPVM_RUNTIME_API_set_compiler_debug(SPVM_ENV* env, int32_t debug);
+
 #endif

@@ -417,5 +417,9 @@ struct SPVM_env {
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
   void (*call_begin_blocks)(SPVM_ENV* env);
+  void* compiler_module_paths;
+  void* (*push_compiler_module_paths)(SPVM_ENV* env, const char* module_path);
+  void* compiler_debug;
+  void* (*set_compiler_debug)(SPVM_ENV* env, const char* module_path);
 };
 #endif
