@@ -4613,20 +4613,6 @@ SPVM_OBJECT* SPVM_RUNTIME_API_new_stack_trace(SPVM_ENV* env, SPVM_OBJECT* except
   return str;
 }
 
-void SPVM_RUNTIME_API_print(SPVM_ENV* env, SPVM_OBJECT* string) {
-  (void)env;
-  
-  int8_t* bytes = env->get_elems_byte(env, string);
-  int32_t string_length = env->length(env, string);
-  
-  {
-    int32_t i;
-    for (i = 0; i < string_length; i++) {
-      putchar((char)bytes[i]);
-    }
-  }
-}
-
 SPVM_OBJECT* SPVM_RUNTIME_API_concat_raw(SPVM_ENV* env, SPVM_OBJECT* string1, SPVM_OBJECT* string2) {
   (void)env;
 

@@ -16,12 +16,12 @@
 
 #include <spvm_native.h>
 
-static int32_t call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
+static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package_name, int32_t argc, const char *argv[]) {
   
   SPVM_RUNTIME* runtime = env->runtime;
   
   // Package
-  int32_t sub_id = SPVM_RUNTIME_API_sub_id(env, package_name, "main", "int(string[])");
+  int32_t sub_id = env->get_sub_id(env, package_name, "main", "int(string[])");
   
   if (sub_id < 0) {
     fprintf(stderr, "Can't find entry point package %s\n", package_name);
@@ -49,7 +49,16 @@ static int32_t call_entry_point_sub(SPVM_ENV* env, const char* package_name, int
   
   int32_t status_code;
   if (exception_flag) {
-    SPVM_RUNTIME_API_print(env, env->exception_object);
+    // Exception
+    void* string = env->exception_object;
+    int8_t* bytes = env->get_elems_byte(env, string);
+    int32_t string_length = env->length(env, string);
+    {
+      int32_t i;
+      for (i = 0; i < string_length; i++) {
+        fputc((char)bytes[i], stderr);
+      }
+    }
     printf("\n");
     status_code = 255;
   }
@@ -124,7 +133,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_RUNTIME_API_call_begin_blocks(env);
 
   // Call entry point sub
-  int32_t status_code = call_entry_point_sub(env, package_name, argc, argv);
+  int32_t status_code = SPVM_BOOT_call_entry_point_sub(env, package_name, argc, argv);
   
   env->free_env(env);
   
