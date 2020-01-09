@@ -170,7 +170,7 @@ compile_spvm(...)
       SV** sv_include_path_ptr = av_fetch(av_include_paths, i, 0);
       SV* sv_include_path = sv_include_path_ptr ? *sv_include_path_ptr : &PL_sv_undef;
       char* include_path = SvPV_nolen(sv_include_path);
-      SPVM_LIST_push(compiler->module_include_pathes, include_path);
+      SPVM_LIST_push(compiler->module_paths, include_path);
     }
   }
 
