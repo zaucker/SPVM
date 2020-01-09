@@ -288,7 +288,7 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
 }
 
-SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler, const char* package_name) {
+SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler, const char* package_name, SPVM_ENV* env_empty) {
 
   // Create use op for entry point package
   SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
@@ -310,6 +310,9 @@ SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler, const char* package_
   SPVM_RUNTIME* runtime = SPVM_RUNTIME_API_build_runtime(runtime_info);
   
   SPVM_ENV* env = SPVM_RUNTIME_API_create_env(runtime);
+
+  // Free compiler
+  SPVM_COMPILER_free(compiler);
   
   return env;
 }
