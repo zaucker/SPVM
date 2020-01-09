@@ -9,7 +9,6 @@
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_runtime_api.h"
-#include "spvm_runtime_info.h"
 
 #include <spvm_native.h>
 
