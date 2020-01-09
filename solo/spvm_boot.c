@@ -126,7 +126,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   SPVM_COMPILER_free(compiler);
   
   // Call begin blocks
-  SPVM_RUNTIME_API_call_begin_blocks(env);
+  env->call_begin_blocks(env);
 
   // Call entry point sub
   int32_t status_code = SPVM_BOOT_call_entry_point_sub(env, package_name, argc, argv);

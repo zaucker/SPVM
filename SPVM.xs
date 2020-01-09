@@ -300,7 +300,7 @@ call_begin_blocks(...)
   SV* sv_env = sv_env_ptr ? *sv_env_ptr : &PL_sv_undef;
   SPVM_ENV* env = INT2PTR(SPVM_ENV*, SvIV(SvRV(sv_env)));
   
-  SPVM_RUNTIME_API_call_begin_blocks(env);
+  env->call_begin_blocks(env);
 }
 
 SV*

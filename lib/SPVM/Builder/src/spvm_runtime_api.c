@@ -216,6 +216,7 @@ SPVM_ENV* SPVM_RUNTIME_API_create_env(SPVM_RUNTIME* runtime) {
     SPVM_RUNTIME_API_type_name,
     SPVM_RUNTIME_API_new_env,
     SPVM_RUNTIME_API_free_env,
+    SPVM_RUNTIME_API_call_begin_blocks,
   };
   
   int32_t env_length = 255;

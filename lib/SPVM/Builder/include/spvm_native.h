@@ -416,5 +416,6 @@ struct SPVM_env {
   void* (*get_type_name)(SPVM_ENV* env, void* object);
   SPVM_ENV* (*new_env)(SPVM_ENV* env);
   void (*free_env)(SPVM_ENV* env);
+  void (*call_begin_blocks)(SPVM_ENV* env);
 };
 #endif
