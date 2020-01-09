@@ -6,7 +6,6 @@
 
 #include "spvm_native.h"
 
-#include "spvm_op.h"
 #include "spvm_list.h"
 #include "spvm_compiler.h"
 #include "spvm_runtime_api.h"
@@ -78,13 +77,6 @@ int32_t main(int32_t argc, const char *argv[]) {
   
   // compiler->debug = 1;
   
-  // Create use op for entry point package
-  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
-  SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
-  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
-  SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
-  SPVM_LIST_push(compiler->op_use_stack, op_use_start);
-  
   // Get script directory
   const char* cur_script_name = argv[0];
   int32_t cur_script_name_length = (int32_t)strlen(argv[0]);
@@ -103,12 +95,12 @@ int32_t main(int32_t argc, const char *argv[]) {
     cur_script_dir[0] = '.';
     cur_script_dir[1] = '\0';
   }
-  
+
   // Add include path
   SPVM_LIST_push(compiler->module_include_pathes, cur_script_dir);
-  
+
   // Create env
-  SPVM_ENV* env = SPVM_RUNTIME_API_compile(compiler);
+  SPVM_ENV* env = SPVM_RUNTIME_API_compile(compiler, package_name);
 
   if (env == NULL) {
     exit(1);

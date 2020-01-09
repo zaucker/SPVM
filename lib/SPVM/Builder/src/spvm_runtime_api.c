@@ -8,6 +8,7 @@
 #include <complex.h>
 
 #include "spvm_compiler.h"
+#include "spvm_op.h"
 
 #include "spvm_runtime.h"
 #include "spvm_runtime_api.h"
@@ -274,7 +275,14 @@ SPVM_ENV* SPVM_RUNTIME_API_new_env(SPVM_ENV* env) {
   return SPVM_RUNTIME_API_create_env(env->runtime);
 }
 
-SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler) {
+SPVM_ENV* SPVM_RUNTIME_API_compile(SPVM_COMPILER* compiler, const char* package_name) {
+
+  // Create use op for entry point package
+  SPVM_OP* op_name_start = SPVM_OP_new_op_name(compiler, package_name, package_name, 0);
+  SPVM_OP* op_type_start = SPVM_OP_build_basic_type(compiler, op_name_start);
+  SPVM_OP* op_use_start = SPVM_OP_new_op(compiler, SPVM_OP_C_ID_USE, package_name, 0);
+  SPVM_OP_build_use(compiler, op_use_start, op_type_start, NULL, 0);
+  SPVM_LIST_push(compiler->op_use_stack, op_use_start);
 
   SPVM_COMPILER_compile(compiler);
 
