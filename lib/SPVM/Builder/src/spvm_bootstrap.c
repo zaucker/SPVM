@@ -37,7 +37,7 @@
 #include "spvm_sub.h"
 #include "spvm_limit.h"
 
-SPVM_ENV* SPVM_BOOTSTRAP_create_env() {
+SPVM_ENV* SPVM_BOOTSTRAP_new_env() {
 
   void* env_init[]  = {
     (void*)(intptr_t)offsetof(SPVM_RUNTIME, package_vars_heap), // runtime_package_vars_heap_offset
@@ -180,14 +180,5 @@ SPVM_ENV* SPVM_BOOTSTRAP_create_env() {
   // Object header byte size
   env->object_header_byte_size = (void*)(intptr_t)object_header_byte_size;
 
-  warn("AAAAAAAAAAAA");
-  
-
-  // Mortal stack
-  // env->native_mortal_stack_capacity = (void*)(intptr_t)1;
-  // env->native_mortal_stack = (void*)SPVM_RUNTIME_API_alloc_memory_block_zero(env, sizeof(SPVM_OBJECT*) * (intptr_t)env->native_mortal_stack_capacity);
-
-  warn("BBBBBBBBBBB");
-  
   return env;
 }

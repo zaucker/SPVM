@@ -65,7 +65,7 @@ static int32_t SPVM_BOOT_call_entry_point_sub(SPVM_ENV* env, const char* package
 
 int32_t main(int32_t argc, const char *argv[]) {
   
-  SPVM_ENV* env = SPVM_BOOTSTRAP_create_env();
+  SPVM_ENV* env = SPVM_BOOTSTRAP_new_env();
   
   // Package name
   const char* package_name = "Main";
