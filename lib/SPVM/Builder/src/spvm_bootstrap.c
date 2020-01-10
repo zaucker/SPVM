@@ -161,7 +161,7 @@ SPVM_ENV* SPVM_BOOTSTRAP_new_env() {
     SPVM_RUNTIME_API_free_env,
     SPVM_RUNTIME_API_call_begin_blocks,
     SPVM_LIST_new(0), // compiler_module_paths
-    SPVM_RUNTIME_API_push_compiler_module_paths,
+    SPVM_RUNTIME_API_push_compiler_module_path,
     NULL, // compiler_debug
     SPVM_RUNTIME_API_set_compiler_debug,
   };

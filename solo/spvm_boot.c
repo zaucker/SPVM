@@ -92,7 +92,7 @@ int32_t main(int32_t argc, const char *argv[]) {
   }
   
   // Add module path
-  env->push_compiler_module_paths(env, cur_script_dir);
+  env->push_compiler_module_path(env, cur_script_dir);
   
   // Create env
   SPVM_RUNTIME_API_compile(env, package_name);
